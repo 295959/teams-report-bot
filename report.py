@@ -21,7 +21,33 @@ date_text = f"{target.month}/{target.day}({weekdays[target.weekday()]})"
 title = f"프라계열 주요현안 일일보고 {date_text}"
 
 payload = {
-    "text": title + "\n" + FILE_LINK
+    "type": "message",
+    "attachments": [
+        {
+            "contentType": "application/vnd.microsoft.card.adaptive",
+            "content": {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.2",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": f"📊 {title}",
+                        "weight": "Bolder",
+                        "size": "Medium",
+                        "wrap": True
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.OpenUrl",
+                        "title": "📂 보고서 열기",
+                        "url": FILE_LINK
+                    }
+                ]
+            }
+        }
+    ]
 }
 
 requests.post(WEBHOOK_URL, json=payload)
