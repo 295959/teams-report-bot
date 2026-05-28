@@ -50,4 +50,10 @@ payload = {
     ]
 }
 
-requests.post(WEBHOOK_URL, json=payload)
+response = requests.post(WEBHOOK_URL, json=payload, timeout=30)
+
+print("Teams status:", response.status_code)
+print("Teams response:", response.text)
+
+if response.status_code < 200 or response.status_code >= 300:
+    raise Exception(f"Teams 전송 실패: {response.status_code} / {response.text}")
