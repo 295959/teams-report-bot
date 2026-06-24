@@ -50,10 +50,19 @@ payload = {
     ]
 }
 
-response = requests.post(WEBHOOK_URL, json=payload, timeout=30)
+import time
 
-print("Teams status:", response.status_code)
-print("Teams response:", response.text)
+for attempt in range(1, 4):
+    response = requests.post(WEBHOOK_URL, json=payload, timeout=30)
 
-if response.status_code < 200 or response.status_code >= 300:
+    print("Teams status:", response.status_code)
+    print("Teams response:", response.text)
+
+    if 200 <= response.status_code < 300:
+        break
+
+    print(f"전송 실패, {attempt}/3회 시도")
+    time.sleep(10)
+
+else:
     raise Exception(f"Teams 전송 실패: {response.status_code} / {response.text}")
