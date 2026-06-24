@@ -2,7 +2,7 @@ name: Daily Report
 
 on:
   schedule:
-    - cron: '7 1 * * 1-5'
+    - cron: '0 1 * * 1-5'
   workflow_dispatch:
 
 jobs:
@@ -21,4 +21,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 실행
+        env:
+          GMAIL_ADDRESS: ${{ secrets.GMAIL_ADDRESS }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          CHANNEL_EMAIL: ${{ secrets.CHANNEL_EMAIL }}
+          FILE_LINK: ${{ secrets.FILE_LINK }}
         run: python report.py
